@@ -18,24 +18,24 @@ namespace robot2.Programs
             var motor = _motorFactory.CreateMotor(MotorPorts.MA);
             _motors.Add(motor);
 
-            var startCommand = Command.Create("motor1start", motor, (motor) => motor.Start(Direction.Forward));
-            var stopCommand = Command.Create("motor1stop", motor, (motor) => motor.Stop());
+            //var startCommand = Command.Create("motor1start", motor, (motor) => motor.Start(Direction.Forward));
+            //var stopCommand = Command.Create("motor1stop", motor, (motor) => motor.Stop());
             
-            AddCondition(new Condition(
-                "ButtonPressed", 
-                ConditionType.ContinuousEvaluation,
-                button,
-                (button) => ((TouchSensor)button).IsPressed(),
-                startCommand
-            ));
+            //AddCondition(new Condition(
+            //    "ButtonPressed", 
+            //    ConditionType.ContinuousEvaluation,
+            //    button,
+            //    (button) => ((TouchSensor)button).IsPressed(),
+            //    startCommand
+            //));
 
-            AddCondition(new Condition(
-                "ButtonReleased",
-                ConditionType.ContinuousEvaluation,
-                button,
-                (button) => !((TouchSensor)button).IsPressed(),
-                stopCommand
-            ));
+            //AddCondition(new Condition(
+            //    "ButtonReleased",
+            //    ConditionType.ContinuousEvaluation,
+            //    button,
+            //    (button) => !((TouchSensor)button).IsPressed(),
+            //    stopCommand
+            //));
         }
     }
 }
