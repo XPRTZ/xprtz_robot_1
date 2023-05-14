@@ -26,10 +26,10 @@ namespace robot2.Programs
                 new MotorWithFunc { Motor = motorLeft, CommandAction = (motor) => motor.Start(Direction.Forward) },
                 new MotorWithFunc { Motor = motorRight, CommandAction = (motor) => motor.Start(Direction.Backward) }
             });
-            var stopCommand = Command.Create("stopCommand", new MotorWithFunc[]
+            var forwardCommand = Command.Create("forwardCommand", new MotorWithFunc[]
             {
-                new MotorWithFunc { Motor = motorLeft, CommandAction = (motor) => motor.Stop() },
-                new MotorWithFunc { Motor = motorRight, CommandAction = (motor) => motor.Stop() }
+                new MotorWithFunc { Motor = motorLeft, CommandAction = (motor) => motor.Start(Direction.Forward) },
+                new MotorWithFunc { Motor = motorRight, CommandAction = (motor) => motor.Start(Direction.Forward) }
             });
 
             AddCondition(new Condition(
@@ -45,7 +45,7 @@ namespace robot2.Programs
                 ConditionType.ContinuousEvaluation,
                 sensor,
                 (sensor) => ((USRangeSensor)sensor).GetDistance() >= 20,
-                stopCommand
+                forwardCommand
             ));
         }
     }
