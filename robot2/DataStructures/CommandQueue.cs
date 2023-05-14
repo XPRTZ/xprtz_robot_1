@@ -78,8 +78,10 @@ namespace robot2.DataStructures
             _queue.Clear();
         }
 
-        public void LoadProgram(RobotProgram program)
+        public void LoadProgram(IRobotProgram program)
         {
+            IsLoading = true;
+            
             ClearCommands();
             ClearConditions();
 
@@ -88,7 +90,11 @@ namespace robot2.DataStructures
             SetMotors(program.GetMotors);
 
             program.GetCommands.ForEach(command => _queue.Enqueue(command));
+
+            IsLoading = false;
         }
+
+        public bool IsLoading { get; private set; }
 
         public void SetMotors(List<Motor> motors)
         {

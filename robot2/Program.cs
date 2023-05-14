@@ -1,5 +1,8 @@
+using Iot.Device.GoPiGo3.Sensors;
 using Robot.Infrastructure.BrickPi;
 using robot2.BackgroundTasks;
+using robot2.DataStructures;
+using robot2.Models;
 using robot2.Programs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +14,30 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddBrickPi();
-builder.Services.AddTransient<IButtonClickRobotProgram, ButtonClickRobotProgram>();
-builder.Services.AddTransient<IRangeRobotProgram, RangeRobotProgram>();
 
-builder.Services.AddHostedService<RobotLoop>();
+builder.Services.AddTransient<ButtonClickRobotProgram>();
+builder.Services.AddTransient<RangeRobotProgram>();
+builder.Services.AddTransient<RobotProgramResolver>(sp => key =>
+{
+    return key switch
+    {
+        nameof(ButtonClickRobotProgram) => sp.GetRequiredService<ButtonClickRobotProgram>(),
+        nameof(RangeRobotProgram) => sp.GetRequiredService<RangeRobotProgram>(),
+        _ => throw new KeyNotFoundException()
+    };
+});
+
+builder.Services.AddSingleton<CommandQueue>(_ => CommandQueue.CreateQueue());
+
+builder.Services.AddHostedService<RobotLoop>(sp =>
+{
+    var commandQueue = sp.GetRequiredService<CommandQueue>();
+    
+    //var program = sp.GetRequiredService<ButtonClickRobotProgram>();
+    var program = sp.GetRequiredService<RangeRobotProgram>();
+    
+    return new RobotLoop(commandQueue, program);
+});
 
 
 var app = builder.Build();

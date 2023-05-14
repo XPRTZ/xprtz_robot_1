@@ -3,7 +3,7 @@ using Robot.Infrastructure.BrickPi.Sensors;
 
 namespace robot2.Models
 {
-    public abstract class RobotProgram
+    public abstract class RobotProgram : IRobotProgram
     {
         private List<Command> _startingCommands;
         private List<Condition> _conditions;

@@ -1,9 +1,8 @@
 ﻿using Robot.Infrastructure.BrickPi.Movement;
-using robot2.Models;
 
-namespace robot2.Programs;
+namespace robot2.Models;
 
-public interface IRangeRobotProgram
+public interface IRobotProgram
 {
     void ConfigureProgram();
     void AddCommand(Command command);

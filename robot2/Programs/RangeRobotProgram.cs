@@ -5,7 +5,7 @@ using robot2.Models.Enums;
 
 namespace robot2.Programs
 {
-    public class RangeRobotProgram : Models.RobotProgram, IRangeRobotProgram
+    public class RangeRobotProgram : Models.RobotProgram
     {
         public RangeRobotProgram(IMotorFactory motorFactory, ISensorFactory sensorFactory) : base(motorFactory, sensorFactory)
         {
