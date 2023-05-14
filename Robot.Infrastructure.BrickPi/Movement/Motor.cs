@@ -31,11 +31,11 @@ namespace Robot.Infrastructure.BrickPi.Movement
 
             if (direction == Direction.Forward)
             {
-                _motor.SetSpeed(100);
+                _motor.SetSpeed(25);
             }
             else
             {
-                _motor.SetSpeed(-100);
+                _motor.SetSpeed(-25);
             }
         }
 
@@ -44,12 +44,12 @@ namespace Robot.Infrastructure.BrickPi.Movement
             if (_direction == Direction.Forward)
             {
                 _direction = Direction.Backward;
-                _motor.SetSpeed(-100);
+                _motor.SetSpeed(-25);
             }
             else
             {
                 _direction = Direction.Forward;
-                _motor.SetSpeed(100);
+                _motor.SetSpeed(25);
             }
         }
 
