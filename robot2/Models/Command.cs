@@ -1,30 +1,26 @@
-﻿using Robot.Infrastructure.BrickPi.Movement;
-
-namespace robot2.Models
+﻿namespace robot2.Models
 {
     public class Command
     {
         private string _name;
-        private readonly IMotor _motor;
-        private readonly Action<IMotor> _commandAction;
+        private readonly MotorWithFunc[] _motorWithFunc;
 
-        private Command(string name, IMotor motor, Action<IMotor> commandAction)
+        private Command(string name, MotorWithFunc[] motorWithFunc)
         {
             _name = name;
-            _motor = motor;
-            _commandAction = commandAction;
+            _motorWithFunc = motorWithFunc;
         }
 
-        public static Command Create(string name, IMotor motor, Action<IMotor> commandAction)
+        public static Command Create(string name, MotorWithFunc[] motorWithFunc)
         {
-            return new Command(name, motor, commandAction);
+            return new Command(name, motorWithFunc);
         }
 
         public string Name => _name;
 
         public void Execute()
         {
-            _commandAction.Invoke(_motor);
+            _motorWithFunc.ToList().ForEach(motor => motor.CommandAction.Invoke(motor.Motor));
         }
     }
 }

@@ -15,18 +15,29 @@ namespace robot2.Programs
         {
             var sensor = _sensorFactory.CreateUSRangeSensor(SensorPorts.S4);
 
-            var motor = _motorFactory.CreateMotor(MotorPorts.MA);
-            _motors.Add(motor);
+            var motorRight = _motorFactory.CreateMotor(MotorPorts.MA);
+            var motorLeft = _motorFactory.CreateMotor(MotorPorts.MB);
 
-            var startCommand = Command.Create("motor1start", motor, (motor) => motor.Start(Direction.Forward));
-            var stopCommand = Command.Create("motor1stop", motor, (motor) => motor.Stop());
-            
+            _motors.Add(motorRight);
+            _motors.Add(motorLeft);
+
+            var turnCommand = Command.Create("turnCommand", new MotorWithFunc[]
+            {
+                new MotorWithFunc { Motor = motorLeft, CommandAction = (motor) => motor.Start(Direction.Forward) },
+                new MotorWithFunc { Motor = motorRight, CommandAction = (motor) => motor.Start(Direction.Backward) }
+            });
+            var stopCommand = Command.Create("stopCommand", new MotorWithFunc[]
+            {
+                new MotorWithFunc { Motor = motorLeft, CommandAction = (motor) => motor.Stop() },
+                new MotorWithFunc { Motor = motorRight, CommandAction = (motor) => motor.Stop() }
+            });
+
             AddCondition(new Condition(
-                "CloseRange", 
+                "CloseRange",
                 ConditionType.ContinuousEvaluation,
                 sensor,
                 (sensor) => ((USRangeSensor)sensor).GetDistance() < 20,
-                startCommand
+                turnCommand
             ));
 
             AddCondition(new Condition(
